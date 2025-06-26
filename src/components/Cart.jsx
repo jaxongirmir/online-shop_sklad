@@ -56,19 +56,14 @@ const Cart = () => {
         <div className="space-y-6">
           <div className="bg-white rounded-lg shadow-md">
             {savatItems.map((item) => (
-              <div key={item._id} className="flex flex-col sm:flex-row items-start sm:items-center p-4 border-b last:border-b-0 gap-4">
-                {/* <img
-                  src={item.rasm}
-                  alt={item.name}
-                  className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
-                /> */}
+              <div key={item.id} className="flex flex-col sm:flex-row items-start sm:items-center p-4 border-b last:border-b-0 gap-4">
                 <div className="flex-1 min-w-0">
                   <h3 className="font-semibold text-gray-900 truncate">{item.name}</h3>
                   <p className="text-blue-600 font-medium">{formatNarx(item.salePrice)}</p>
                 </div>
                 <div className="flex items-center space-x-3 flex-shrink-0">
                   <button
-                    onClick={() => soniniKamaytirish(item._id)}
+                    onClick={() => soniniKamaytirish(item.id)}
                     className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                     disabled={item.soni <= 1}
                   >
@@ -82,7 +77,7 @@ const Cart = () => {
                     <Plus className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => savatdanOlib(item._id)}
+                    onClick={() => savatdanOlib(item.id)}
                     className="p-2 text-gray-500 hover:text-red-600 transition-colors ml-2"
                   >
                     <Trash2 className="h-4 w-4" />

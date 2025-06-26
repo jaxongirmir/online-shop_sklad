@@ -1,12 +1,11 @@
-import React from 'react';
-import { ShoppingCart, User, LogOut, Menu } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useCart } from '../contexts/CartContext';
+import React from "react";
+import { ShoppingCart, User, LogOut, Menu } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { useCart } from "../contexts/CartContext";
 
 const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
   const { user, logout } = useAuth();
   const { jamiSoni } = useCart();
-
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,9 +17,11 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">UFLEX</h1>
+            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+              UFLEX
+            </h1>
           </div>
-          
+
           <div className="flex items-center space-x-2 sm:space-x-4">
             <button
               onClick={onCartClick}
@@ -33,7 +34,7 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
                 </span>
               )}
             </button>
-            
+
             {user ? (
               <div className="flex items-center space-x-2">
                 <button

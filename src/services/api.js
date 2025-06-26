@@ -5,67 +5,83 @@ const API_BASE_URL = 'https://api.example.com';
 const fakeProducts = [
   {
     id: 1,
-    nomi: 'Samsung Galaxy S23',
-    narx: 8500000,
-    rasm: 'https://images.pexels.com/photos/788946/pexels-photo-788946.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Zamonaviy smartfon yuqori sifatli kamera bilan'
+    batch_number: '26-May',
+    name: "Simeno Fall",
+    salePrice: 4500000,
+    quantity: 48,
+    createdAt: new Date()
   },
-  {
+    {
     id: 2,
-    nomi: 'iPhone 14 Pro',
-    narx: 12000000,
-    rasm: 'https://images.pexels.com/photos/1275229/pexels-photo-1275229.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Apple smartfoni professional foydalanuvchilar uchun'
+    batch_number: '28-May',
+    name: "Simeno Home",
+    salePrice: 9830000,
+    quantity: 80,
+    createdAt: new Date()
   },
-  {
+   {
     id: 3,
-    nomi: 'MacBook Pro M2',
-    narx: 25000000,
-    rasm: 'https://images.pexels.com/photos/18105/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Professional laptop ishbilarmonlar uchun'
+    batch_number: '28-May',
+    name: "Simeno Pade",
+    salePrice: 400000,
+    quantity: 129,
+    createdAt: new Date()
   },
-  {
+ {
     id: 4,
-    nomi: 'AirPods Pro',
-    narx: 3500000,
-    rasm: 'https://images.pexels.com/photos/3780681/pexels-photo-3780681.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Simsiz quloqchin shovqinni bekor qilish bilan'
+    batch_number: '26-May',
+    name: "Simeno Fall",
+    salePrice: 4500000,
+    quantity: 48,
+    createdAt: new Date()
   },
-  {
+    {
     id: 5,
-    nomi: 'iPad Air',
-    narx: 7500000,
-    rasm: 'https://images.pexels.com/photos/1334597/pexels-photo-1334597.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Planshot kompyuter ijodiy ishlar uchun'
+    batch_number: '28-May',
+    name: "Simeno Home",
+    salePrice: 9830000,
+    quantity: 80,
+    createdAt: new Date()
   },
-  {
+   {
     id: 6,
-    nomi: 'Apple Watch',
-    narx: 4500000,
-    rasm: 'https://images.pexels.com/photos/437037/pexels-photo-437037.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Aqlli soat salomatlik nazorati bilan'
+    batch_number: '28-May',
+    name: "Simeno Pade",
+    salePrice: 400000,
+    quantity: 129,
+    createdAt: new Date()
   },
-  {
+{
     id: 7,
-    nomi: 'Sony WH-1000XM4',
-    narx: 2800000,
-    rasm: 'https://images.pexels.com/photos/3394650/pexels-photo-3394650.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Premium simsiz quloqchin'
+    batch_number: '26-May',
+    name: "Simeno Fall",
+    salePrice: 4500000,
+    quantity: 48,
+    createdAt: new Date()
   },
-  {
+    {
     id: 8,
-    nomi: 'Dell XPS 13',
-    narx: 18000000,
-    rasm: 'https://images.pexels.com/photos/205421/pexels-photo-205421.jpeg?auto=compress&cs=tinysrgb&w=400',
-    tavsif: 'Yengil va kuchli ultrabook'
-  }
+    batch_number: '28-May',
+    name: "Simeno Home",
+    salePrice: 9830000,
+    quantity: 80,
+    createdAt: new Date()
+  },
+   {
+    id: 9,
+    batch_number: '28-May',
+    name: "Simeno Pade",
+    salePrice: 400000,
+    quantity: 129,
+    createdAt: new Date()
+  },
 ];
 
 const fakeUser = {
   id: 1,
-  ism: 'Jasur Karimov',
-  email: 'jasur@example.com',
-  telefon: '+998901234567'
+  ism: 'Jaxongir Mirhalikov',
+  email: 'jaxongirmirhalikov@example.com',
+  telefon: '+998774497188'
 };
 
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
