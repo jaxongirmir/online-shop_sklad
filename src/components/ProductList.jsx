@@ -57,7 +57,7 @@ const ProductList = () => {
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
         {mahsulotlar.map((mahsulot) => (
           <div
-            key={mahsulot._id}
+            key={mahsulot.id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
           >
             <div className="p-4">
