@@ -60,7 +60,6 @@ const Profile = () => {
       <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Profil</h2>
       
       <div className="space-y-6">
-        {/* User Info */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-4">
             <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
@@ -74,7 +73,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Orders */}
         <div className="bg-white rounded-lg shadow-md p-6">
           <div className="flex items-center space-x-2 mb-4">
             <Package className="h-6 w-6 text-gray-600" />

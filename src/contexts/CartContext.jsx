@@ -5,6 +5,8 @@ const CartContext = createContext();
 
 export const useCart = () => {
   const context = useContext(CartContext);
+  console.log('home', context);
+  
   if (context === undefined) {
     throw new Error('useCart must be used within a CartProvider');
   }

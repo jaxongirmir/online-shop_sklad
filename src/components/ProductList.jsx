@@ -41,7 +41,7 @@ const ProductList = () => {
   return (
     <div className="p-4 lg:p-6">
       <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-6">Barcha mahsulotlar</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
+      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
         {mahsulotlar.map((mahsulot) => (
           <div key={mahsulot._id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
             <div className="p-4">
