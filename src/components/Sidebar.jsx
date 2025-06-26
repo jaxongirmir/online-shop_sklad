@@ -10,7 +10,6 @@ const Sidebar = ({ activeTab, onTabChange, isOpen, onClose }) => {
 
   return (
     <>
-      {/* Mobile overlay */}
       {isOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden"
@@ -18,7 +17,6 @@ const Sidebar = ({ activeTab, onTabChange, isOpen, onClose }) => {
         />
       )}
 
-      {/* Sidebar */}
       <div className={`
        fixed top-0 left-0 z-50 h-full bg-white border-r border-gray-200 shadow-lg transform transition-transform duration-300 ease-in-out
 ${isOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -26,7 +24,6 @@ lg:translate-x-0 lg:fixed lg:top-0 lg:pt-20 lg:left-0 lg:h-screen lg:z-30
 w-64
 
       `}>
-        {/* Mobile header with close button */}
         <div className="flex items-center justify-between px-4 py-3 border-b lg:hidden">
           <h2 className="text-lg font-semibold">Menyu</h2>
           <button
@@ -37,7 +34,6 @@ w-64
           </button>
         </div>
 
-        {/* Menu Items */}
         <nav className="p-4 min-h-screen">
           <ul className="space-y-2">
             {menuItems.map((item) => {

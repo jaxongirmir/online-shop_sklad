@@ -45,11 +45,14 @@ const ProductList = () => {
         {mahsulotlar.map((mahsulot) => (
           <div key={mahsulot._id} className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
             <div className="p-4">
-              <p className="text-xs text-gray-500 mb-1">Partiya: {mahsulot.batch_number}</p>
-              <h3 className="text-lg font-semibold text-gray-800 mb-1">{mahsulot.name}</h3>
-              <p className="text-sm text-gray-600 mb-1">Narxi: {formatNarx(mahsulot.salePrice)}</p>
-              <p className="text-sm text-gray-600 mb-1">Omborda: {mahsulot.quantity} dona</p>
-              <p className="text-sm text-gray-500 mb-3">Yaratilgan: {new Date(mahsulot.createdAt).toLocaleString('uz-UZ')}</p>
+              <p className="text-xs text-gray-500 mb-1">Partiya: {'25-iyun'}</p>
+              {/* <p className="text-xs text-gray-500 mb-1">Partiya: {mahsulot.batch_number && '25-iyun'}</p> */}
+              <h3 className="text-lg font-semibold text-gray-800 mb-1">{mahsulot.name && 'Maxsulot Nomi'}</h3>
+              <p className="text-sm text-gray-600 mb-1">Narxi: {formatNarx(mahsulot.salePrice) && formatNarx(23400)}</p>
+              {/* <p className="text-sm text-gray-600 mb-1">Omborda: {mahsulot.quantity} dona</p> */}
+              <p className="text-sm text-gray-600 mb-1">Omborda:  68 dona</p>
+              <p className="text-sm text-gray-500 mb-3">Yaratilgan:  23-04-2025</p>
+              {/* <p className="text-sm text-gray-500 mb-3">Yaratilgan:  {new Date(mahsulot.createdAt).toLocaleString('uz-UZ')}</p> */}
               <button
                 onClick={() => savatgaQoshish(mahsulot)}
                 className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm"
