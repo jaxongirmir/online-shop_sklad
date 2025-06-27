@@ -1,13 +1,13 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { loginUser, getCurrentUser } from '../services/api';
-import toast from 'react-hot-toast';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { loginUser, getCurrentUser, registerUser } from "../services/api";
+import toast from "react-hot-toast";
 
 const AuthContext = createContext();
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
@@ -17,14 +17,14 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       getCurrentUser()
-        .then(userData => {
+        .then((userData) => {
           setUser(userData);
         })
         .catch(() => {
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
         })
         .finally(() => {
           setLoading(false);
@@ -38,36 +38,45 @@ export const AuthProvider = ({ children }) => {
     try {
       const response = await loginUser(email, parol);
       if (response.success) {
-        localStorage.setItem('token', response.token);
+        localStorage.setItem("token", response.token);
         setUser(response.user);
-        toast.success('Muvaffaqiyatli kirildi!');
+        toast.success("Muvaffaqiyatli kirildi!");
         return true;
       }
-      toast.error('Email yoki parol xato');
+      toast.error("Email yoki parol xato");
       return false;
     } catch (error) {
-      console.error('Login error:', error);
-      toast.error('Kirish xatoligi');
+      console.error("Login error:", error);
+      toast.error("Kirish xatoligi");
       return false;
     }
   };
 
+  const register = async (userData) => {
+    try {
+      const response = await registerUser(userData);
+      toast.success("Ro‘yxatdan o‘tish muvaffaqiyatli!");
+      return response;
+    } catch (error) {
+      console.error("Register error:", error);
+      toast.error("Ro‘yxatdan o‘tishda xatolik");      
+      throw error;
+    }
+  };
+
   const logout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setUser(null);
-    toast.success('Tizimdan chiqildi');
+    toast.success("Tizimdan chiqildi");
   };
 
   const value = {
     user,
     login,
     logout,
-    loading
+    register,
+    loading,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

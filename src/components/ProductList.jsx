@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import { getMahsulotlar } from "../services/api";
+import { fetchProducts, getMahsulotlar } from "../services/api";
 import { useCart } from "../contexts/CartContext";
 
 const ProductList = () => {
@@ -12,7 +12,9 @@ const ProductList = () => {
   useEffect(() => {
     const fetchMahsulotlar = async () => {
       try {
-        const data = await getMahsulotlar();
+        const data = await fetchProducts();
+        console.log(data);
+
         setMahsulotlar(data);
       } catch (error) {
         console.error("Mahsulotlarni yuklashda xatolik:", error);
@@ -24,7 +26,7 @@ const ProductList = () => {
     fetchMahsulotlar();
   }, []);
   const selectItem = (productId) => {
-    return savatItems.find((saveProduct) => saveProduct.id === productId);
+    return savatItems.find((saveProduct) => saveProduct._id === productId);
   };
   const minusButton = (productId) => {
     const current = selectItem(productId);
@@ -57,7 +59,7 @@ const ProductList = () => {
       <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 lg:gap-6">
         {mahsulotlar.map((mahsulot) => (
           <div
-            key={mahsulot.id}
+            key={mahsulot._id}
             className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
           >
             <div className="p-4">
@@ -82,16 +84,16 @@ const ProductList = () => {
                 Yaratilgan:
                 {new Date(mahsulot.createdAt).toLocaleString("uz-UZ")}
               </p>
-              {selectItem(mahsulot.id)?.soni ? (
+              {selectItem(mahsulot._id)?.soni ? (
                 <div className="flex justify-start gap-2">
                   <button
-                    onClick={() => minusButton(mahsulot.id)}
+                    onClick={() => minusButton(mahsulot._id)}
                     className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
                   <span className="font-semibold min-w-[2rem] text-center">
-                    {selectItem(mahsulot.id)?.soni}
+                    {selectItem(mahsulot._id)?.soni}
                   </span>
                   <button
                     onClick={() => savatgaQoshish(mahsulot)}
@@ -100,7 +102,7 @@ const ProductList = () => {
                     <Plus className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => savatdanOlib(mahsulot.id)}
+                    onClick={() => savatdanOlib(mahsulot._id)}
                     className="p-2 text-gray-500 hover:text-red-600 transition-colors ml-2"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -112,7 +114,7 @@ const ProductList = () => {
                   className="w-full bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center space-x-2 text-sm"
                 >
                   <ShoppingCart className="h-4 w-4" />
-                  <span>Savatga qo'shish</span>
+                  <span>Savatga</span>
                 </button>
               )}
             </div>

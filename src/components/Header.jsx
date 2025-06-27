@@ -17,7 +17,10 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
             >
               <Menu className="h-6 w-6" />
             </button>
-            <h1 className="text-xl sm:text-2xl font-bold text-blue-600">
+            <h1
+              className="text-xl sm:text-2xl font-bold text-blue-600"
+              // onClick={() => (window.location.href = "/")}
+            >
               UFLEX
             </h1>
           </div>
