@@ -16,11 +16,15 @@ const Cart = () => {
   } = useCart();
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [promoValue, setPromoValue] = useState("");
 
   const formatNarx = (narx) => {
     return new Intl.NumberFormat("uz-UZ").format(narx) + " so'm";
   };
-
+  const promoActivate = () => {
+    setPromoValue("");
+    toast.success("Iltimos, avval tizimga kiring");
+  };
   const buyurtmaRasmiylashtirish = async () => {
     if (!user) {
       toast.error("Iltimos, avval tizimga kiring");
@@ -113,8 +117,15 @@ const Cart = () => {
                 className="absolute top-0 left-0 w-full py-2 indent-3 rounded border border-black "
                 type="text"
                 placeholder="Promokodni kiriting"
+                value={promoValue}
+                onChange={(v) => setPromoValue(v.target.value)}
               />
-              <button className="absolute top-[-2px] right-[-2px] py-2.5 px-5 bg-[#2563eb] text-white rounded-lg">Kiritish</button>
+              <button
+                className="absolute top-[-2px] right-[-2px] py-2.5 px-5 bg-[#2563eb] text-white rounded-lg"
+                onClick={() => promoActivate()}
+              >
+                Kiritish
+              </button>
             </div>
             <div className="flex justify-between items-center mb-4">
               <span className="text-xl font-bold">Jami:</span>
