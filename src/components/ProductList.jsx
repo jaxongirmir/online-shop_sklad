@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
-import { fetchProducts, getMahsulotlar } from "../services/api";
+import { fetchProducts } from "../services/api";
 import { useCart } from "../contexts/CartContext";
 
 const ProductList = () => {
@@ -13,8 +13,6 @@ const ProductList = () => {
     const fetchMahsulotlar = async () => {
       try {
         const data = await fetchProducts();
-        console.log(data);
-
         setMahsulotlar(data);
       } catch (error) {
         console.error("Mahsulotlarni yuklashda xatolik:", error);

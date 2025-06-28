@@ -18,8 +18,9 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
     if (token) {
-      getCurrentUser()
+      getCurrentUser(id)
         .then((userData) => {
           setUser(userData);
         })
@@ -34,16 +35,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  const login = async (email, parol) => {
+  const login = async (phone, password) => {
     try {
-      const response = await loginUser(email, parol);
-      if (response.success) {
+      const response = await loginUser(phone, password);
+      if (response.token) {
         localStorage.setItem("token", response.token);
-        setUser(response.user);
-        toast.success("Muvaffaqiyatli kirildi!");
+        localStorage.setItem("id", response.client._id);
+        setUser(response.client);
+        toast.success(response.message || "Kirish muvaffaqiyatli!");
         return true;
       }
-      toast.error("Email yoki parol xato");
+      toast.error(response.message || "Kirishda xatolik");
       return false;
     } catch (error) {
       console.error("Login error:", error);
@@ -59,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       return response;
     } catch (error) {
       console.error("Register error:", error);
-      toast.error("Ro‘yxatdan o‘tishda xatolik");      
+      toast.error("Ro‘yxatdan o‘tishda xatolik");
       throw error;
     }
   };
@@ -72,6 +74,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     user,
+    setUser,
     login,
     logout,
     register,

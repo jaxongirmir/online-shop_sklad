@@ -1,27 +1,46 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { X, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
+import { formatCarNumber, formatPhone } from "../hooks/formats";
 
 const LoginModal = ({ isOpen, onClose }) => {
   const [isRegistering, setIsRegistering] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [parol, setParol] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // 👁
   const [ism, setIsm] = useState("");
-  const [telefon, setTelefon] = useState("");
   const [birthday, setBirthday] = useState("");
+  const [cars, setCars] = useState([{ model: "", plateNumber: "" }]); // ✅
   const [loading, setLoading] = useState(false);
-  const [carNumber, setCarNumber] = useState("");
-  const [carModel, setCarModel] = useState("");
   const { login, register } = useAuth();
 
   const resetForm = () => {
     setPhoneNumber("");
     setParol("");
     setIsm("");
-    setTelefon("");
     setBirthday("");
-    setCarNumber("");
-    setCarModel("");
+    setCars([{ model: "", plateNumber: "" }]);
+  };
+
+  const handleCarChange = (index, field, value) => {
+    setCars((prev) =>
+      prev.map((car, i) =>
+        i === index
+          ? {
+              ...car,
+              [field]: field === "plateNumber" ? formatCarNumber(value) : value,
+            }
+          : car
+      )
+    );
+  };
+
+  const handleAddCar = () => {
+    setCars((prev) => [...prev, { model: "", plateNumber: "" }]);
+  };
+
+  const handleRemoveCar = (index) => {
+    setCars((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handleSubmit = async (e) => {
@@ -34,10 +53,10 @@ const LoginModal = ({ isOpen, onClose }) => {
           fullName: ism,
           phone: phoneNumber.replace(/\s/g, ""),
           password: parol,
-          birthday: birthday || "",
+          birthday: birthday || null,
           isVip: false,
           notes: "Sitda yangi ro‘yxatdan o‘tgan foydalanuvchi",
-          cars: carNumber ? [{ model: carModel, plateNumber: carNumber }] : [],
+          cars: cars.filter((car) => car.model || car.plateNumber),
         };
         if (!birthday) delete userData.birthday;
 
@@ -45,7 +64,7 @@ const LoginModal = ({ isOpen, onClose }) => {
         setIsRegistering(false);
         resetForm();
       } else {
-        const loginData = { 
+        const loginData = {
           phone: phoneNumber.replace(/\s/g, ""),
           password: parol,
         };
@@ -62,28 +81,6 @@ const LoginModal = ({ isOpen, onClose }) => {
     }
   };
 
-  const formatPhone = (value) => {
-    let digits = value.replace(/\D/g, "");
-    if (digits.startsWith("998")) digits = digits.slice(3);
-    digits = digits.slice(0, 9);
-    let formatted = "+998";
-    if (digits.length > 0) formatted += " " + digits.slice(0, 2);
-    if (digits.length > 2) formatted += " " + digits.slice(2, 5);
-    if (digits.length > 5) formatted += " " + digits.slice(5, 7);
-    if (digits.length > 7) formatted += " " + digits.slice(7, 9);
-    return formatted;
-  };
-
-  const formatCarNumber = (value) => {
-    let v = value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-    let formatted = "";
-    if (v.length > 0) formatted += v.slice(0, 2);
-    if (v.length > 2) formatted += v.slice(2, 3);
-    if (v.length > 3) formatted += v.slice(3, 6);
-    if (v.length > 6) formatted += v.slice(6, 8);
-    return formatted;
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -95,7 +92,7 @@ const LoginModal = ({ isOpen, onClose }) => {
           </h2>
           <button
             onClick={onClose}
-            className="p-1 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-1 text-gray-500 hover:text-gray-700"
           >
             <X className="h-5 w-5" />
           </button>
@@ -106,13 +103,13 @@ const LoginModal = ({ isOpen, onClose }) => {
             <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Toliq Ismingiz
+                  To‘liq ismingiz
                 </label>
                 <input
                   type="text"
                   value={ism}
                   onChange={(e) => setIsm(e.target.value)}
-                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800"
+                  className="w-full px-4 py-2 border rounded-xl"
                   required
                   placeholder="Ismingiz"
                 />
@@ -120,51 +117,60 @@ const LoginModal = ({ isOpen, onClose }) => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Tug'ilgan sana
+                  Tug‘ilgan sana
                 </label>
                 <input
                   type="date"
                   value={birthday}
                   onChange={(e) => setBirthday(e.target.value)}
-                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800 appearance-none relative"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg width='20' height='20' fill='none' stroke='%236B7280' stroke-width='2' viewBox='0 0 24 24'%3E%3Cpath d='M19 9l-7 7-7-7'/%3E%3C/svg%3E\")",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 1rem center",
-                    backgroundSize: "1.5em 1.5em",
-                  }}
-                  placeholder="YYYY-MM-DD"
+                  className="w-full px-4 py-2 border rounded-xl"
                 />
               </div>
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Avtomobil raqami
+                  Mashinalar
                 </label>
-                <input
-                  type="text"
-                  value={carNumber}
-                  onChange={(e) =>
-                    setCarNumber(formatCarNumber(e.target.value))
-                  }
-                  maxLength={8}
-                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800 uppercase"
-                  placeholder="01A123BC"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Avtomobil modeli
-                </label>
-                <input
-                  type="text"
-                  value={carModel}
-                  onChange={(e) => setCarModel(e.target.value)}
-                  className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800"
-                  placeholder="Nexia 3"
-                />
+                <div className="space-y-2">
+                  {cars.map((car, idx) => (
+                    <div key={idx} className="flex gap-2 items-center">
+                      <input
+                        type="text"
+                        placeholder="Model"
+                        value={car.model}
+                        onChange={(e) =>
+                          handleCarChange(idx, "model", e.target.value)
+                        }
+                        className="flex-1 px-3 py-2 border rounded-lg"
+                      />
+                      <input
+                        type="text"
+                        placeholder="01A123BC"
+                        value={car.plateNumber}
+                        onChange={(e) =>
+                          handleCarChange(idx, "plateNumber", e.target.value)
+                        }
+                        className="flex-1 px-3 py-2 border rounded-lg uppercase"
+                      />
+                      {cars.length > 1 && (
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveCar(idx)}
+                          className="text-red-500 hover:text-red-700 text-lg"
+                        >
+                          ×
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  onClick={handleAddCar}
+                  className="mt-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+                >
+                  + Mashina qo‘shish
+                </button>
               </div>
             </>
           )}
@@ -178,7 +184,7 @@ const LoginModal = ({ isOpen, onClose }) => {
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(formatPhone(e.target.value))}
               maxLength={17}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800"
+              className="w-full px-4 py-2 border rounded-xl"
               required
               placeholder="+998 90 123 45 67"
             />
@@ -188,14 +194,27 @@ const LoginModal = ({ isOpen, onClose }) => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Parol
             </label>
-            <input
-              type="password"
-              value={parol}
-              onChange={(e) => setParol(e.target.value)}
-              className="w-full px-4 py-2 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-200 shadow-sm bg-gradient-to-r from-white to-blue-50 placeholder-gray-400 text-gray-800"
-              required
-              placeholder="Parolingiz"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"} // 👁
+                value={parol}
+                onChange={(e) => setParol(e.target.value)}
+                className="w-full px-4 py-2 border rounded-xl pr-10"
+                required
+                placeholder="Parolingiz"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-3 top-2.5 text-gray-500 hover:text-gray-700"
+              >
+                {showPassword ? (
+                  <EyeOff className="h-5 w-5" />
+                ) : (
+                  <Eye className="h-5 w-5" />
+                )}
+              </button>
+            </div>
           </div>
 
           <button

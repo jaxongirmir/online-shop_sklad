@@ -45,7 +45,7 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
                   className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
                 >
                   <User className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline text-sm">{user.ism}</span>
+                  <span className="hidden sm:inline text-sm">{user.fullName}</span>
                 </button>
                 <button
                   onClick={logout}

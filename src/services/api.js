@@ -1,11 +1,8 @@
 import axios from "axios";
-import {API_BASE_URL} from "../api/api.js";
+import { API_BASE_URL } from "../api/api.js";
+
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-export const getMahsulotlar = async () => {
-  await delay(800);
-  return fakeProducts;
-};
 export const registerUser = async (userData) => {
   const res = await axios.post(`${API_BASE_URL}/api/clients`, userData, {
     headers: { "Content-Type": "application/json" },
@@ -38,9 +35,15 @@ export const fetchProducts = async () => {
   return res.data;
 };
 
-export const getCurrentUser = async () => {
-  await delay(300);
-  return fakeUser;
+export const getCurrentUser = async (id) => {
+  try {
+    const res = await axios.get(`${API_BASE_URL}/api/clients/${id}`, {
+      headers: { "Content-Type": "application/json" },
+    });
+    return res.data;
+  } catch (err) {
+    return { success: false };
+  }
 };
 
 export const getUserOrders = async () => {
@@ -62,4 +65,23 @@ export const createOrder = async (items) => {
     })),
   };
   return { success: true, order: newOrder };
+};
+
+export const updateUser = async (patchData) => {
+  const token = localStorage.getItem("token");
+  const id = localStorage.getItem("id");
+  const res = await axios.patch(
+    `${API_BASE_URL}/api/clients/${id}`,
+    patchData,
+    {
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+      },
+    }
+  );
+  if (res.status !== 200 && res.status !== 201) {
+    throw new Error("Profilni yangilashda xatolik yuz berdi");
+  }
+  return res.data;
 };
