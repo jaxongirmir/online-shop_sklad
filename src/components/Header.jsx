@@ -2,10 +2,13 @@ import React from "react";
 import { ShoppingCart, User, LogOut, Menu } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useCart } from "../contexts/CartContext";
+import { useNavigate, useLocation } from "react-router-dom";
 
-const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
+const Header = ({ onLoginClick, onMenuClick }) => {
   const { user, logout } = useAuth();
   const { jamiSoni } = useCart();
+  const navigate = useNavigate();
+  const location = useLocation();
   return (
     <header className="bg-white shadow-sm border-b sticky top-0 z-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,8 +21,8 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
               <Menu className="h-6 w-6" />
             </button>
             <h1
-              className="text-xl sm:text-2xl font-bold text-blue-600"
-              // onClick={() => (window.location.href = "/")}
+              className="text-xl sm:text-2xl font-bold text-blue-600 cursor-pointer"
+              onClick={() => navigate("/")}
             >
               UFLEX
             </h1>
@@ -27,7 +30,7 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
 
           <div className="flex items-center space-x-2 sm:space-x-4">
             <button
-              onClick={onCartClick}
+              onClick={() => navigate("/cart")}
               className="relative p-2 text-gray-600 hover:text-blue-600 transition-colors"
             >
               <ShoppingCart className="h-5 w-5 sm:h-6 sm:w-6" />
@@ -41,11 +44,13 @@ const Header = ({ onLoginClick, onCartClick, onProfileClick, onMenuClick }) => {
             {user ? (
               <div className="flex items-center space-x-2">
                 <button
-                  onClick={onProfileClick}
+                  onClick={() => navigate("/profile")}
                   className="flex items-center space-x-2 text-gray-700 hover:text-blue-600 transition-colors"
                 >
                   <User className="h-4 w-4 sm:h-5 sm:w-5" />
-                  <span className="hidden sm:inline text-sm">{user.fullName}</span>
+                  <span className="hidden sm:inline text-sm">
+                    {user.fullName}
+                  </span>
                 </button>
                 <button
                   onClick={logout}

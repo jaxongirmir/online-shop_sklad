@@ -1,11 +1,14 @@
 import React from 'react';
 import { Home, ShoppingCart, User, X } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-const Sidebar = ({ activeTab, onTabChange, isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const menuItems = [
-    { id: 'home', label: 'Bosh sahifa', icon: Home },
-    { id: 'cart', label: 'Savat', icon: ShoppingCart },
-    { id: 'profile', label: 'Profil', icon: User }
+    { id: '/', label: 'Bosh sahifa', icon: Home },
+    { id: '/cart', label: 'Savat', icon: ShoppingCart },
+    { id: '/profile', label: 'Profil', icon: User }
   ];
 
   return (
@@ -38,13 +41,13 @@ w-64
           <ul className="space-y-2">
             {menuItems.map((item) => {
               const Icon = item.icon;
-              const isActive = activeTab === item.id;
+              const isActive = location.pathname === item.id;
 
               return (
                 <li key={item.id}>
                   <button
                     onClick={() => {
-                      onTabChange(item.id);
+                      navigate(item.id);
                       onClose();
                     }}
                     className={`w-full flex items-center px-4 py-3 rounded-lg text-left transition-all duration-200 

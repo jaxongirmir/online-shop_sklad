@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import ProductList from './components/ProductList';
@@ -18,69 +19,59 @@ function App() {
     setActiveTab(tab);
   };
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'home':
-        return <ProductList />;
-      case 'cart':
-        return <Cart />;
-      case 'profile':
-        return <Profile />;
-      default:
-        return <ProductList />;
-    }
-  };
-
   return (
     <AuthProvider>
       <CartProvider>
-        <div className="min-h-screen bg-gray-50">
-          <Header
-            onLoginClick={() => setIsLoginModalOpen(true)}
-            onCartClick={() => setActiveTab('cart')}
-            onProfileClick={() => setActiveTab('profile')}
-            onMenuClick={() => setIsSidebarOpen(true)}
-          />
-          
-          <div className="flex">
-            <Sidebar
-              activeTab={activeTab}
-              onTabChange={handleTabChange}
-              isOpen={isSidebarOpen}
-              onClose={() => setIsSidebarOpen(false)}
+        <Router>
+          <div className="min-h-screen bg-gray-50">
+            <Header
+              onLoginClick={() => setIsLoginModalOpen(true)}
+              onCartClick={() => {}}
+              onProfileClick={() => {}}
+              onMenuClick={() => setIsSidebarOpen(true)}
             />
-            
-            <main className="flex-1 lg:ml-64">
-              {renderContent()}
-            </main>
-          </div>
-          
-          <LoginModal
-            isOpen={isLoginModalOpen}
-            onClose={() => setIsLoginModalOpen(false)}
-          />
-          
-          <Toaster
-            position="top-left"
-            toastOptions={{
-              duration: 3000,
-              style: {
-                background: '#2563eb',
-                color: '#fff',
-              },
-              success: {
+            <div className="flex">
+              <Sidebar
+                activeTab={activeTab}
+                onTabChange={(tab) => {}}
+                isOpen={isSidebarOpen}
+                onClose={() => setIsSidebarOpen(false)}
+              />
+              <main className="flex-1 lg:ml-64">
+                <Routes>
+                  <Route path="/" element={<ProductList />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/profile" element={<Profile />} />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </Routes>
+              </main>
+            </div>
+            <LoginModal
+              isOpen={isLoginModalOpen}
+              onClose={() => setIsLoginModalOpen(false)}
+            />
+            <Toaster
+              position="top-left"
+              toastOptions={{
+                duration: 3000,
                 style: {
                   background: '#2563eb',
+                  color: '#fff',
                 },
-              },
-              error: {
-                style: {
-                  background: '#EF4444',
+                success: {
+                  style: {
+                    background: '#2563eb',
+                  },
                 },
-              },
-            }}
-          />
-        </div>
+                error: {
+                  style: {
+                    background: '#EF4444',
+                  },
+                },
+              }}
+            />
+          </div>
+        </Router>
       </CartProvider>
     </AuthProvider>
   );

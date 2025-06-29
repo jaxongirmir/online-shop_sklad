@@ -17,11 +17,11 @@ export const CartProvider = ({ children }) => {
 
   const savatgaQoshish = (mahsulot) => {
     setSavatItems((prev) => {
-      const mavjudItem = prev.find((item) => item.id === mahsulot.id);
+      const mavjudItem = prev.find((item) => item._id === mahsulot._id);
       if (mavjudItem) {
         toast.success("Mahsulot miqdori oshirildi");
         return prev.map((item) =>
-          item.id === mahsulot.id ? { ...item, soni: item.soni + 1 } : item
+          item._id === mahsulot._id ? { ...item, soni: item.soni + 1 } : item
         );
       }
       toast.success("Mahsulot savatga qo'shildi");
@@ -30,14 +30,14 @@ export const CartProvider = ({ children }) => {
   };
 
   const savatdanOlib = (id) => {
-    setSavatItems((prev) => prev.filter((item) => item.id !== id));
+    setSavatItems((prev) => prev.filter((item) => item._id !== id));
     toast.success("Mahsulot savatdan olib tashlandi");
   };
 
   const soniniKamaytirish = (id) => {
     setSavatItems((prev) => {
       return prev.map((item) => {
-        if (item.id === id) {
+        if (item._id === id) {
           if (item.soni > 1) {
             return { ...item, soni: item.soni - 1 };
           }

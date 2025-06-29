@@ -34,7 +34,13 @@ export const fetchProducts = async () => {
   }
   return res.data;
 };
-
+export const getBranchs = async () => {
+  const res = await axios.get(`${API_BASE_URL}/api/branches`);
+  if (res.status !== 200) {
+    throw new Error("Filial olishda xatolik yuz berdi");
+  }
+  return res.data;
+};
 export const getCurrentUser = async (id) => {
   try {
     const res = await axios.get(`${API_BASE_URL}/api/clients/${id}`, {
@@ -51,20 +57,36 @@ export const getUserOrders = async () => {
   return [];
 };
 
-export const createOrder = async (items) => {
-  await delay(1500);
-  const newOrder = {
-    id: Date.now(),
-    sana: new Date().toISOString().split("T")[0],
-    jami: items.reduce((sum, item) => sum + item.narx * item.soni, 0),
-    holat: "Yangi",
-    mahsulotlar: items.map((item) => ({
-      nomi: item.nomi,
-      soni: item.soni,
-      narx: item.narx,
-    })),
+export const createOrder = async (savatItems, options = {}) => {
+  const clientId = options.clientId || localStorage.getItem("id");
+  const branch = options.branch || "main";
+  const products = savatItems.map((item) => ({
+    product: item._id || item.id,
+    quantity: item.soni,
+    price: item.salePrice,
+  }));
+  const totalAmount = products.reduce((sum, p) => sum + p.price * p.quantity, 0);
+  const paidAmount = totalAmount;
+  const debtAmount = 0;
+  const orderData = {
+    client: clientId,
+    branch,
+    orderType: "vip",
+    products,
+    totalAmount,
+    paidAmount,
+    debtAmount,
+    paymentType: "cash",
+    notes: "Online shop order",
+    date_returned: "2025-06-28",
   };
-  return { success: true, order: newOrder };
+  const res = await axios.post(`${API_BASE_URL}/api/orders`, orderData, {
+    headers: { "Content-Type": "application/json" },
+  });
+  if (res.status !== 200 && res.status !== 201) {
+    throw new Error("Buyurtma yuborishda xatolik yuz berdi");
+  }
+  return res.data;
 };
 
 export const updateUser = async (patchData) => {

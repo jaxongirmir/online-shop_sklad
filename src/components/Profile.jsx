@@ -141,7 +141,7 @@ const Profile = () => {
             <div className="bg-blue-100 p-3 rounded-full flex-shrink-0">
               <User className="h-8 w-8 text-blue-600" />
             </div>
-            <div className="flex-1 space-y-1">
+            <div className="flex flex-col gap-2 space-y-1">
               <h3 className="text-xl font-semibold text-gray-900">
                 {user.fullName || "N/A"}
               </h3>
@@ -154,7 +154,7 @@ const Profile = () => {
                 onClick={() => setEditOpen(true)}
                 className="mt-2 px-4 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
               >
-                Редактировать
+                Tahrirlash
               </button>
             </div>
           </div>

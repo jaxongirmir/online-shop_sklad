@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Trash2, Plus, Minus } from "lucide-react";
 import { useCart } from "../contexts/CartContext";
 import { useAuth } from "../contexts/AuthContext";
-import { createOrder } from "../services/api";
+import { createOrder, getBranchs } from "../services/api";
 import toast from "react-hot-toast";
 
 const Cart = () => {
@@ -17,31 +17,56 @@ const Cart = () => {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [promoValue, setPromoValue] = useState("");
+  const [branchs, setBranchs] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState("");
 
   const formatNarx = (narx) => {
     return new Intl.NumberFormat("uz-UZ").format(narx) + " so'm";
   };
+  console.log(savatItems);
+  
   const promoActivate = () => {
     setPromoValue("");
     toast.success("Iltimos, avval tizimga kiring");
   };
+  useEffect(() => {
+    const fetchBranchs = async () => {
+      try {
+        const data = await getBranchs();
+        setBranchs(data);
+      } catch (error) {
+        console.error("Mahsulotlarni yuklashda xatolik:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchBranchs();
+  }, []);
   const buyurtmaRasmiylashtirish = async () => {
     if (!user) {
       toast.error("Iltimos, avval tizimga kiring");
       return;
     }
-
     if (savatItems.length === 0) {
       toast.error("Savat bo'sh");
       return;
     }
-
+    if (!selectedBranch) {
+      toast.error("Filialni tanlang");
+      return;
+    }
     setLoading(true);
     try {
-      const response = await createOrder(savatItems);
-      if (response.success) {
-        toast.success("Buyurtma muvaffaqiyatli rasmiylashtiruldi!");
+      const response = await createOrder(savatItems, {
+        clientId: user?._id,
+        branch: selectedBranch,
+      });
+      if (response && response._id) {
+        toast.success("Buyurtma muvaffaqiyatli rasmiylashtirildi!");
         savatniTozalash();
+      } else {
+        toast.error("Buyurtma berishda xatolik yuz berdi");
       }
     } catch (error) {
       console.error("Buyurtma berish xatoligi:", error);
@@ -72,7 +97,7 @@ const Cart = () => {
           <div className="bg-white rounded-lg shadow-md">
             {savatItems.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="flex flex-col sm:flex-row items-start sm:items-center p-4 border-b last:border-b-0 gap-4"
               >
                 <div className="flex-1 min-w-0">
@@ -85,7 +110,7 @@ const Cart = () => {
                 </div>
                 <div className="flex items-center space-x-3 flex-shrink-0">
                   <button
-                    onClick={() => soniniKamaytirish(item.id)}
+                    onClick={() => soniniKamaytirish(item._id)}
                     className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                     disabled={item.soni <= 1}
                   >
@@ -101,7 +126,7 @@ const Cart = () => {
                     <Plus className="h-4 w-4" />
                   </button>
                   <button
-                    onClick={() => savatdanOlib(item.id)}
+                    onClick={() => savatdanOlib(item._id)}
                     className="p-2 text-gray-500 hover:text-red-600 transition-colors ml-2"
                   >
                     <Trash2 className="h-4 w-4" />
@@ -112,21 +137,37 @@ const Cart = () => {
           </div>
 
           <div className="bg-white rounded-lg shadow-md p-6">
-            <div className="relative w-full h-[50px] mb-2">
-              <input
-                className="absolute top-0 left-0 w-full py-2 indent-3 rounded border border-black "
-                type="text"
-                placeholder="Promokodni kiriting"
-                value={promoValue}
-                onChange={(v) => setPromoValue(v.target.value)}
-              />
-              <button
-                className="absolute top-[-2px] right-[-2px] py-2.5 px-5 bg-[#2563eb] text-white rounded-lg"
-                onClick={() => promoActivate()}
+            <div className="mb-4">
+              <label className="block mb-1 font-medium">
+                Filialni tanlang:
+              </label>
+              <select
+                className="w-full border rounded px-3 py-2"
+                value={selectedBranch}
+                onChange={(e) => setSelectedBranch(e.target.value)}
+                disabled={loading || branchs.length === 0}
               >
-                Kiritish
-              </button>
+                <option value="">Filialni tanlang</option>
+                {branchs.map((branch) => (
+                  <option
+                    key={branch._id || branch.id}
+                    value={branch._id || branch.id}
+                  >
+                    {branch.name}
+                  </option>
+                ))}
+              </select>
+              {/* Branch address below select, styled small and semi-transparent */}
+              {selectedBranch && (
+                <div className="mt-1 text-xs text-gray-500">
+                  {
+                    branchs.find((b) => (b._id || b.id) === selectedBranch)
+                      ?.address
+                  }
+                </div>
+              )}
             </div>
+
             <div className="flex justify-between items-center mb-4">
               <span className="text-xl font-bold">Jami:</span>
               <span className="text-2xl font-bold text-blue-600">

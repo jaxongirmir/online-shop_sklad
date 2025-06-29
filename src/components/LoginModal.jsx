@@ -131,9 +131,9 @@ const LoginModal = ({ isOpen, onClose }) => {
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Mashinalar
                 </label>
-                <div className="space-y-2">
+                <div className="flex flex-col gap-2">
                   {cars.map((car, idx) => (
-                    <div key={idx} className="flex gap-2 items-center">
+                    <div key={idx} className="flex gap-2 w-full">
                       <input
                         type="text"
                         placeholder="Model"
@@ -141,7 +141,7 @@ const LoginModal = ({ isOpen, onClose }) => {
                         onChange={(e) =>
                           handleCarChange(idx, "model", e.target.value)
                         }
-                        className="flex-1 px-3 py-2 border rounded-lg"
+                        className="w-1/2 px-3 py-2 border rounded-lg"
                       />
                       <input
                         type="text"
@@ -150,13 +150,13 @@ const LoginModal = ({ isOpen, onClose }) => {
                         onChange={(e) =>
                           handleCarChange(idx, "plateNumber", e.target.value)
                         }
-                        className="flex-1 px-3 py-2 border rounded-lg uppercase"
+                        className="w-1/2 px-3 py-2 border rounded-lg uppercase"
                       />
                       {cars.length > 1 && (
                         <button
                           type="button"
                           onClick={() => handleRemoveCar(idx)}
-                          className="text-red-500 hover:text-red-700 text-lg"
+                          className="text-red-500 hover:text-red-700 text-lg px-2"
                         >
                           ×
                         </button>

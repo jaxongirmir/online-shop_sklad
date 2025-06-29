@@ -9,6 +9,7 @@ const ProductList = () => {
   const { savatgaQoshish, soniniKamaytirish, savatItems, savatdanOlib } =
     useCart();
 
+
   useEffect(() => {
     const fetchMahsulotlar = async () => {
       try {
